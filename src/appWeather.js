@@ -1,5 +1,8 @@
 import './sass/_weatherBlock.scss'
 import './sass/_weatherForecast.scss'
+import _debounce from 'lodash.debounce';
+
+const DEBOUNCE_DELAY = 100;
 
 import moment from 'moment';
 import axios from 'axios';
@@ -183,14 +186,16 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
             document.addEventListener("click", (event)=>{
               if(event.target?.classList.contains("weatherForecast_weatherBtn")){
                 weatherEl.innerHTML = '';
-                geoWeatherApp()
+                const  debGeoWeatherApp =  _debounce(geoWeatherApp, DEBOUNCE_DELAY)
+                debGeoWeatherApp()
               }
               })
 
               document.addEventListener("click", (event)=>{
                 if(event.target?.classList.contains("weatherBlock_weatherBtn")){
                   weatherEl.innerHTML = '';
-                  geoWeatherForecast()
+                  const debGeoWeatherForecast =  _debounce(geoWeatherForecast, DEBOUNCE_DELAY)
+                  debGeoWeatherForecast()
                 }
               }
                   )
