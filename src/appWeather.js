@@ -122,9 +122,9 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
             const day5 = obj.list[39]
 
             const refs = {
-            temp: document.querySelector('.weather__temperature'),
-            city: document.querySelector('.weatherBlock_weather-name'),
-            clean: document.querySelector('.weatherBlock_clean'),
+            temp: document.querySelector('weatherBlock_city-temp'),
+            city: document.querySelector('weatherBlock_weather-name'),
+            clean: document.querySelector('weatherBlock_clean'),
             Btn: document.querySelector(weatherBlock_weatherBtn)
 
             }
