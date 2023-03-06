@@ -95,13 +95,13 @@ geoWeatherApp();
 const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
  
   const { data } = await axios.get(`${URL2}?lat=${lat}&lon=${lon}&units=${units}&APPID=${API_KEY}`);
-     console.log(data)
+    //  console.log(data)
      return data;
  }
 
  const geoWeatherForecast = () => {
      
-  navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition(function(position) {
     const lat = position.coords.latitude
     const lon = position.coords.longitude
     const units = 'metric'
@@ -118,12 +118,32 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
 }
 
  const renderWeatherForecast = obj => {
+             console.log('вот прогноз', obj)
+
+
             const day0 = obj.list[0]
             const day1 = obj.list[8]
             const day2 = obj.list[16]
             const day3 = obj.list[24]
             const day4 = obj.list[32]
             const day5 = obj.list[39]
+
+            const refs = {
+            temp: document.querySelector('.weather__temperature'),
+            city: document.querySelector('.weatherBlock_weather-name'),
+            clean: document.querySelector('.weatherBlock_clean'),
+            Btn: document.querySelector(weatherBlock_weatherBtn)
+
+            }
+            refs.temp.textContent = Math.round(day1.main.temp)
+            refs.city.textContent = obj.city.name;
+            refs.clean.innerHTML = ''
+            refs.Btn.textContent = 'weather for day'
+            refs.Btn.classList.add("weatherForecast_weatherBtn")
+
+
+      
+          
 
             // console.log(moment(new Date(day1.dt*1000)).format('ddd DD MMM LT'), day1.main.temp, day1.weather[0].description)
             // console.log(moment(new Date(day2.dt*1000)).format('ddd DD MMM LT'), day2.main.temp, day2.weather[0].description)
@@ -140,24 +160,7 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
 // и кнопку переименовать weather for day и изменить ей класс на weatherForecast_weatherBtn (потому что я жду появления єтого класса чтоб дать возможность вернуться к погоде на день)
 // спасибо
 
-            weatherEl.innerHTML =  `
-
-             <div class="weatherBlock_main-container">
-
-             <div class="weatherBlock_weather-nav">
-             <div class="weatherBlock_city-temp">
-             ${Math.round(day1.main.temp)}
-                 <sup>&deg;</sup>
-             </div>
-       
-             <div class="weatherBlock_city-info">
-             <p class = "weatherBlock_weather-description">${moment(new Date(day0.dt*1000)).format('ddd DD MMM')}</p>
-                 <p class = "weatherBlock_city-name">
-                     <span class = "weatherBlock_weather-name">${obj.city.name}</span>
-                 </p>
-             
-           </div>
-         </div>
+            refs.clean.insertAdjacentHTML =  `
           
                   <ul class="weatherForecast_week-info-grid">
 
@@ -188,26 +191,41 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
                   </li>
           
                   </ul>
-
-              <div  class = "weatherBlock_Btn">
-                <button  type="button" class="weatherForecast_weatherBtn" id="loadWeater" >weather for day</button>
-              </div>
                 
                 `;
+
+var todayTempElement = document.querySelector('.weatherBlock_weather-description');
+var animation = todayTempElement.animate([
+  {transform: 'translate(0)'},
+  {transform: 'translate(-10px)'}
+], 500);
+animation.addEventListener('finish', function() {
+  todayTempElement.style.transform = 'translate(0px)';
+})
+
+var todayTempElement = document.querySelector('.weatherForecast_week-info-grid');
+var animation = todayTempElement.animate([
+  {transform: 'translate(0)'},
+  {transform: 'translate(-10px)'}
+], 500);
+animation.addEventListener('finish', function() {
+  todayTempElement.style.transform = 'translate(0px)';
+})
  }
 
-            document.addEventListener("click", (event)=>{
-              if(event.target?.classList.contains("weatherForecast_weatherBtn")){
-                weatherEl.innerHTML = '';
+
+
+            // document.addEventListener("click", (event)=>{
+            //   if(event.target?.classList.contains("weatherForecast_weatherBtn")){
+            //     weatherEl.innerHTML = '';
                 
-                geoWeatherApp()
-              }
-              })
+            //     geoWeatherApp()
+            //   }
+            //   })
 
               document.addEventListener("click", (event)=>{
-                if(event.target?.classList.contains("weatherBlock_weatherBtn")){
-                  weatherEl.innerHTML = '';
-            
+                if(event.target?.classList.contains("weatherBlock_weatherBtn")){        
+                  console.log('Покажи прогноз 5дней')    
                   geoWeatherForecast()
                 }
               }

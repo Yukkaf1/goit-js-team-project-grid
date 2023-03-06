@@ -7,6 +7,7 @@
 .weatherForecast {
     &_week-info-grid {
         display: grid;   
+        padding-top: 10px;
     }
     
     &_item {
