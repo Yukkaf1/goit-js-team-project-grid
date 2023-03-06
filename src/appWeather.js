@@ -1,10 +1,5 @@
 import './sass/_weatherBlock.scss'
 import './sass/_weatherForecast.scss'
-// import _debounce from 'lodash.debounce';
-
-// const DEBOUNCE_DELAY = 100;
-// const STORAGE_LAT = 'geo-current-lat';
-// const STORAGE_LON = 'geo-current-lon';
 
 import moment from 'moment';
 import axios from 'axios';
@@ -33,9 +28,7 @@ const geoWeatherApp = () => {
         let lat = position.coords.latitude
         let lon = position.coords.longitude
         const units = 'metric'
-
-        // localStorage.setItem(STORAGE_LAT, lat);
-        // localStorage.setItem(STORAGE_LON, lon);
+    
 
       fetchWeatherGeo(lat, lon, units)
            .then(renderWeather)
@@ -141,10 +134,6 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
             refs.Btn.textContent = 'weather for day'
             refs.Btn.classList.add("weatherForecast_weatherBtn")
 
-
-      
-          
-
             // console.log(moment(new Date(day1.dt*1000)).format('ddd DD MMM LT'), day1.main.temp, day1.weather[0].description)
             // console.log(moment(new Date(day2.dt*1000)).format('ddd DD MMM LT'), day2.main.temp, day2.weather[0].description)
             // console.log(moment(new Date(day3.dt*1000)).format('ddd DD MMM LT'), day3.main.temp, day3.weather[0].description)
@@ -194,23 +183,23 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
                 
                 `;
 
-var todayTempElement = document.querySelector('.weatherBlock_weather-description');
-var animation = todayTempElement.animate([
-  {transform: 'translate(0)'},
-  {transform: 'translate(-10px)'}
-], 500);
-animation.addEventListener('finish', function() {
-  todayTempElement.style.transform = 'translate(0px)';
-})
+// var todayTempElement = document.querySelector('.weatherBlock_weather-description');
+// var animation = todayTempElement.animate([
+//   {transform: 'translate(0)'},
+//   {transform: 'translate(-10px)'}
+// ], 500);
+// animation.addEventListener('finish', function() {
+//   todayTempElement.style.transform = 'translate(0px)';
+// })
 
-var todayTempElement = document.querySelector('.weatherForecast_week-info-grid');
-var animation = todayTempElement.animate([
-  {transform: 'translate(0)'},
-  {transform: 'translate(-10px)'}
-], 500);
-animation.addEventListener('finish', function() {
-  todayTempElement.style.transform = 'translate(0px)';
-})
+// var todayTempElement = document.querySelector('.weatherForecast_week-info-grid');
+// var animation = todayTempElement.animate([
+//   {transform: 'translate(0)'},
+//   {transform: 'translate(-10px)'}
+// ], 500);
+// animation.addEventListener('finish', function() {
+//   todayTempElement.style.transform = 'translate(0px)';
+// })
  }
 
 
