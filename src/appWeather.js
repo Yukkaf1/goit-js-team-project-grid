@@ -1,8 +1,10 @@
 import './sass/_weatherBlock.scss'
 import './sass/_weatherForecast.scss'
-import _debounce from 'lodash.debounce';
+// import _debounce from 'lodash.debounce';
 
-const DEBOUNCE_DELAY = 100;
+// const DEBOUNCE_DELAY = 100;
+// const STORAGE_LAT = 'geo-current-lat';
+// const STORAGE_LON = 'geo-current-lon';
 
 import moment from 'moment';
 import axios from 'axios';
@@ -24,17 +26,16 @@ const fetchWeatherGeo = async (lat=33.44, lon=-94.04, units='metric') => {
  
  }
 
-const weatherApp = () => {
-  geoWeatherApp()
-    }
 
 const geoWeatherApp = () => {
      
       navigator.geolocation.getCurrentPosition(function(position) {
-        const lat = position.coords.latitude
-        const lon = position.coords.longitude
+        let lat = position.coords.latitude
+        let lon = position.coords.longitude
         const units = 'metric'
 
+        // localStorage.setItem(STORAGE_LAT, lat);
+        // localStorage.setItem(STORAGE_LON, lon);
 
       fetchWeatherGeo(lat, lon, units)
            .then(renderWeather)
@@ -67,7 +68,7 @@ weatherEl.innerHTML = `
         
       </div>
     </div>
-          
+              <div class="weatherBlock_clean">
               <div class="weatherBlock_info-icon">
                   <img class="weatherBlock_city-icon" src="${`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}" alt="${weather.weather[0].description}"/>
               </div>
@@ -76,13 +77,17 @@ weatherEl.innerHTML = `
                 <p class="weatherBlock_info-date"> ${day} <br> ${date} </p>
               </div>
 
+              </div>
+
               <div class = "weatherBlock_Btn">
                 <button  type="button" class="weatherBlock_weatherBtn" id="loadWeater" >weather for week</button>
+              </div>
+
               </div>
         `
 }
 
-weatherApp();
+geoWeatherApp();
 
 // // ----------------------------- 7 DAY -------------------------------
 
@@ -92,7 +97,6 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
   const { data } = await axios.get(`${URL2}?lat=${lat}&lon=${lon}&units=${units}&APPID=${API_KEY}`);
      console.log(data)
      return data;
- 
  }
 
  const geoWeatherForecast = () => {
@@ -121,11 +125,20 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
             const day4 = obj.list[32]
             const day5 = obj.list[39]
 
-            console.log(moment(new Date(day1.dt*1000)).format('ddd DD MMM LT'), day1.main.temp, day1.weather[0].description)
-            console.log(moment(new Date(day2.dt*1000)).format('ddd DD MMM LT'), day2.main.temp, day2.weather[0].description)
-            console.log(moment(new Date(day3.dt*1000)).format('ddd DD MMM LT'), day3.main.temp, day3.weather[0].description)
-            console.log(moment(new Date(day4.dt*1000)).format('ddd DD MMM LT'), day4.main.temp, day4.weather[0].description)
-            console.log(moment(new Date(day5.dt*1000)).format('ddd DD MMM LT'), day5.main.temp, day5.weather[0].description)
+            // console.log(moment(new Date(day1.dt*1000)).format('ddd DD MMM LT'), day1.main.temp, day1.weather[0].description)
+            // console.log(moment(new Date(day2.dt*1000)).format('ddd DD MMM LT'), day2.main.temp, day2.weather[0].description)
+            // console.log(moment(new Date(day3.dt*1000)).format('ddd DD MMM LT'), day3.main.temp, day3.weather[0].description)
+            // console.log(moment(new Date(day4.dt*1000)).format('ddd DD MMM LT'), day4.main.temp, day4.weather[0].description)
+            // console.log(moment(new Date(day5.dt*1000)).format('ddd DD MMM LT'), day5.main.temp, day5.weather[0].description)
+
+
+
+// Анлрей, посмотри пожалуйста - из рендера ниже мне нужно только <ul> поставить в weatherBlock_clean (который создаеться в рендере выше) 
+// Заменить textcontent weatherBlock_city-temp на ${Math.round(day1.main.temp)} и weatherBlock_weather-description на ${moment(new Date(day0.dt*1000)).format('ddd DD MMM')}
+// заменить weatherBlock_weather-name на ${obj.city.name}
+
+// и кнопку переименовать weather for day и изменить ей класс на weatherForecast_weatherBtn (потому что я жду появления єтого класса чтоб дать возможность вернуться к погоде на день)
+// спасибо
 
             weatherEl.innerHTML =  `
 
@@ -186,19 +199,17 @@ const fetchWeatherForecast = async (lat=33.44, lon=-94.04, units='metric') => {
             document.addEventListener("click", (event)=>{
               if(event.target?.classList.contains("weatherForecast_weatherBtn")){
                 weatherEl.innerHTML = '';
-                const  debGeoWeatherApp =  _debounce(geoWeatherApp, DEBOUNCE_DELAY)
-                debGeoWeatherApp()
+                
+                geoWeatherApp()
               }
               })
 
               document.addEventListener("click", (event)=>{
                 if(event.target?.classList.contains("weatherBlock_weatherBtn")){
                   weatherEl.innerHTML = '';
-                  const debGeoWeatherForecast =  _debounce(geoWeatherForecast, DEBOUNCE_DELAY)
-                  debGeoWeatherForecast()
+            
+                  geoWeatherForecast()
                 }
               }
                   )
-
-export default weatherApp;
 
